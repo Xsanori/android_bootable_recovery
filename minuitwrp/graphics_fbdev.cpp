@@ -101,16 +101,9 @@ static void set_displayed_framebuffer(unsigned n)
     vi.yres_virtual = gr_framebuffer[0].height * 2;
     vi.yoffset = n * gr_framebuffer[0].height;
     vi.bits_per_pixel = gr_framebuffer[0].pixel_bytes * 8;
-    if (ioctl(fb_fd, FBIOPUT_VSCREENINFO, &vi) < 0) {
-        perror("active fb swap failed");
-#ifdef TW_FBIOPAN
-    } else {
-        if (ioctl(fb_fd, FBIOPAN_DISPLAY, &vi) < 0) {
-            perror("pan failed");
-        }
-#endif
+    if (ioctl(fb_fd, FBIOPAN_DISPLAY, &vi) < 0) {
+        perror("pan failed");
     }
-    displayed_buffer = n;
 }
 
 static GRSurface* fbdev_init(minui_backend* backend) {
